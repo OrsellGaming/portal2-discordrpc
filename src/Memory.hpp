@@ -37,7 +37,7 @@ static bool TryGetModule(const char* moduleName, ModuleInfo* info)
     auto mHandle = GetModuleHandleA(moduleName);
 
     char buffer[MAX_PATH];
-    if (!GetModuleFileName(mHandle, buffer, sizeof(buffer)))
+    if (!GetModuleFileNameA(mHandle, buffer, sizeof(buffer)))
         return false;
 
     auto temp = MODULEINFO();
@@ -137,7 +137,7 @@ static std::string GetProcessName()
 {
 #ifdef _WIN32
     char temp[MAX_PATH];
-    GetModuleFileName(NULL, temp, sizeof(temp));
+    GetModuleFileNameA(NULL, temp, sizeof(temp));
 #else
     char link[32];
     char temp[MAX_PATH] = { 0 };

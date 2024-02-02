@@ -89,7 +89,7 @@ bool Discord::Init()
                 if (entry.first == steamId) {
                     auto rank = std::string("Global Rank ") + std::to_string(entry.second.scoreData.playerRank);
                     console->Debug("SGP: Global rank of %llu -> %i\n", steamId, entry.second.scoreData.playerRank);
-                    std::strcpy(this->globalRank, rank.c_str());
+                    strcpy_s(this->globalRank, rank.c_str());
                 }
             }
 
@@ -177,22 +177,22 @@ void Discord::ResolveLevel()
     if (!this->isMenuing && std::strlen(this->level) != 0) {
         Map map;
         if (Map::GetMapByName(this->level, map, campaign)) {
-            std::strcpy(this->largeAsset.key, map.levelName);
-            std::strcpy(this->largeAsset.text, map.chamberName);
+            strcpy_s(this->largeAsset.key, map.levelName);
+            strcpy_s(this->largeAsset.text, map.chamberName);
         } else {
-            std::strcpy(this->largeAsset.key, "puzzlemaker_newchamber");
+            strcpy_s(this->largeAsset.key, "puzzlemaker_newchamber");
 
             if (std::strstr(this->level, PUZZLEMAKER_STRING)) {
-                std::strcpy(this->largeAsset.text, "Puzzler Maker");
+                strcpy_s(this->largeAsset.text, "Puzzler Maker");
             } else if (std::strstr(this->level, WORKSHOP_STRING)) {
-                std::strcpy(this->largeAsset.text, "Workshop");
+                strcpy_s(this->largeAsset.text, "Workshop");
             } else {
-                std::strcpy(this->largeAsset.text, "Custom Map");
+                strcpy_s(this->largeAsset.text, "Custom Map");
             }
         }
     } else {
-        std::strcpy(this->largeAsset.key, "main_menu");
-        std::strcpy(this->largeAsset.text, "Main Menu");
+        strcpy_s(this->largeAsset.key, "main_menu");
+        strcpy_s(this->largeAsset.text, "Main Menu");
     }
 }
 void Discord::ResolveRank()
@@ -200,7 +200,7 @@ void Discord::ResolveRank()
     this->smallAsset.isActive = false;
 
     if (this->hasChallengeMode && std::strlen(this->globalRank) != 0) {
-        std::strcpy(this->smallAsset.key, "iverb");
+        strcpy_s(this->smallAsset.key, "iverb");
 
         Map map;
         Chamber chamber;
@@ -215,7 +215,7 @@ void Discord::ResolveRank()
                 if (entry.first == steamId) {
                     auto rank = std::string("Rank ") + std::to_string(entry.second.score.playerRank);
                     console->Debug("Level rank of %llu for %s -> %i\n", steamId, map.chamberName, entry.second.score.playerRank);
-                    std::strcpy(this->smallAsset.text, rank.c_str());
+                    strcpy_s(this->smallAsset.text, rank.c_str());
                     this->smallAsset.isActive = true;
                 }
             }
@@ -224,7 +224,7 @@ void Discord::ResolveRank()
                 console->Debug("Unable to find rank of %llu for %s!\n", steamId, map.chamberName);
             }
         } else {
-            std::strcpy(this->smallAsset.text, this->globalRank);
+            strcpy_s(this->smallAsset.text, this->globalRank);
             this->smallAsset.isActive = true;
         }
     }
@@ -243,8 +243,8 @@ void Discord::SendPresence()
     std::memset(&presence, 0, sizeof(presence));
 
     if (std::strcmp(this->details, details) != 0 || std::strcmp(this->state, state) != 0) {
-        std::strcpy(this->details, details);
-        std::strcpy(this->state, state);
+        strcpy_s(this->details, details);
+        strcpy_s(this->state, state);
 
         presence.startTimestamp = this->timestamp = time(0);
         console->Debug("New timestamp!\n");
@@ -288,7 +288,7 @@ void Discord::Update()
     }
 
     if (std::strcmp(this->level, engine->m_szLevelName) != 0) {
-        std::strcpy(this->level, engine->m_szLevelName);
+        strcpy_s(this->level, engine->m_szLevelName);
         console->Debug("this->level = %s\n", this->level);
         change = change || std::strlen(engine->m_szLevelName) != 0;
     }
